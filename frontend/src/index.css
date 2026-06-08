@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+
+:root {
+  --glass: rgba(255,255,255,0.06);
+}
+
+/* Custom small utilities */
+.backdrop-glass {
+  backdrop-filter: blur(8px) saturate(120%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+
+.loading-screen {
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.12), transparent 30%), linear-gradient(90deg, rgba(6,182,212,0.06), transparent);
+}
