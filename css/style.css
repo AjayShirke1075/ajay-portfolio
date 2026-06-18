@@ -3133,7 +3133,7 @@ body::before {
     .tech-float:hover { transform: none !important; }
     .cta-primary:hover, .cta-ghost:hover { transform: none; }
     .holo-card:hover { transform: none; }
-    cursor, .cursor-follower { display: none; }
+    .cursor, .cursor-follower { display: none; }
     body { cursor: auto; }
     button { cursor: auto; }
 }
@@ -3272,4 +3272,199 @@ body::before {
     background-size: 60px 60px;
     pointer-events: none;
     z-index: 0;
+}
+
+
+/* ================================================================
+   ADDITIONAL RESPONSIVE REFINEMENTS
+   ================================================================ */
+
+/* ===== GLOBAL: TAP HIGHLIGHT + TOUCH ===== */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a, button, .pf-btn, .pl-ghost, .pl-solid,
+.nav-cta-btn, .cta-primary, .cta-ghost,
+.nav-item, .stag, .role-pill {
+    touch-action: manipulation;
+}
+
+/* ===== PREVENT HORIZONTAL OVERFLOW ===== */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+section, footer {
+    overflow-x: hidden;
+}
+
+/* ===== BODY SCROLL LOCK (mobile nav overlay) ===== */
+/* body.no-scroll already set at line ~110; adding position:fixed for iOS */
+body.no-scroll {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+/* ===== PREVENT iOS INPUT ZOOM (requires 16px min) ===== */
+@media (max-width: 768px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
+
+/* ===== TABLET (≤980px): section padding + footer ===== */
+@media (max-width: 980px) {
+    :root { --sp: 100px 0; }
+
+    .footer-inner { padding: 0 40px; }
+
+    /* Slightly less holo-inner padding on tablet */
+    .holo-inner { padding: 32px; }
+}
+
+/* ===== LARGE PHONE (≤768px): footer inner, service cards ===== */
+@media (max-width: 768px) {
+    .footer-inner { padding: 0 24px; }
+
+    /* Service card inner child padding */
+    .svc-card > * { padding: 22px 22px !important; }
+    .svc-icon-wrap {
+        margin: 0 22px 14px !important;
+        padding: 0 !important;
+    }
+    .svc-card h3  { margin: 0 22px 8px  !important; padding: 0 !important; }
+    .svc-card p   { margin: 0 22px 12px !important; padding: 0 !important; }
+    .svc-list     { margin: 0 22px 16px !important; padding: 0 !important; }
+    .svc-footer   { padding: 12px 22px  !important; }
+
+    /* Contact email: prevent overflow */
+    .c-link-val { word-break: break-all; }
+}
+
+/* ===== SMALL PHONE (≤480px) ===== */
+@media (max-width: 480px) {
+    .footer-inner { padding: 0 16px; }
+
+    /* Service card tighter */
+    .svc-card > * { padding: 18px 16px !important; }
+    .svc-icon-wrap {
+        margin: 0 16px 12px !important;
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+    }
+    .svc-card h3  { margin: 0 16px 8px  !important; }
+    .svc-card p   { margin: 0 16px 10px !important; }
+    .svc-list     { margin: 0 16px 14px !important; }
+    .svc-footer   { padding: 10px 16px  !important; }
+
+    /* Hide scroll cue — not enough space */
+    .scroll-cue { display: none; }
+
+    /* Contact link padding */
+    .c-link { padding: 12px 14px; gap: 12px; }
+    .c-link-icon { width: 38px; height: 38px; font-size: 0.9rem; }
+    .c-link-val { font-size: 0.78rem; }
+
+    /* Availability card */
+    .avail-ul li { font-size: 0.8rem; padding: 5px 8px; }
+    .loc-pill { font-size: 0.7rem; }
+    .resume-dl-btn { padding: 11px; }
+
+    /* Timeline tighter */
+    .tl-entry { margin-bottom: 32px; }
+
+    /* Project filters */
+    .proj-filters { gap: 6px; margin-bottom: 32px; }
+    .pf-btn { padding: 7px 13px; font-size: 0.78rem; }
+
+    /* About grid tighter gap */
+    .about-grid { gap: 16px; }
+
+    /* Nav brand size on very small */
+    .nav-inner { gap: 10px; }
+}
+
+/* ===== TINY PHONE (≤380px): metrics stack ===== */
+@media (max-width: 380px) {
+    /* Already in CSS: nav-cta-btn hidden, heading reduced */
+
+    /* Stack metrics vertically on very tiny screens */
+    .hero-metrics {
+        flex-direction: column;
+        border-radius: 14px;
+    }
+    .metric-sep {
+        width: 60%;
+        height: 1px;
+        margin: 0 auto;
+    }
+    .metric { padding: 12px 16px; }
+}
+
+/* ===== LANDSCAPE MOBILE (phone rotated) ===== */
+@media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+    .hero { min-height: 100svh; }
+    .hero-layout { grid-template-columns: 1fr 1fr; min-height: 100svh; padding: 0; }
+    .hero-right { order: 2; height: 100svh; }
+    .hero-left {
+        order: 1;
+        padding: 80px 24px 24px;
+        text-align: left;
+        overflow-y: auto;
+    }
+    .hero-eyebrow { justify-content: flex-start; }
+    .hero-heading { font-size: clamp(1.6rem, 5vw, 2.4rem); letter-spacing: -1px; }
+    .hero-subtext { font-size: 0.85rem; margin-bottom: 16px; }
+    .role-carousel { justify-content: flex-start; margin-bottom: 16px; }
+    .hero-cta { flex-direction: row; margin-bottom: 16px; }
+    .cta-primary, .cta-ghost { width: auto; max-width: none; }
+    .hero-metrics { max-width: 100%; }
+    .scroll-cue { display: none; }
+
+    /* Hide orbit rings, badges on landscape */
+    .orbit-ring, .f-python, .f-tf, .f-torch, .f-cv { display: none; }
+    .photo-fade-left { display: none; }
+    .photo-fade-bottom {
+        height: 50%;
+        background: linear-gradient(to top, var(--bg) 0%, rgba(3,3,10,0.7) 30%, transparent 100%);
+    }
+}
+
+/* ===== HEIGHT-CONSTRAINED VIEWPORTS ===== */
+@media (max-height: 600px) and (max-width: 980px) and (orientation: portrait) {
+    .hero-right { height: 38svh; min-height: 200px; }
+    .hero-left { padding: 20px 24px 36px; }
+    .hero-heading { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+    .hero-eyebrow { margin-bottom: 16px; }
+    .hero-subtext { margin-bottom: 20px; }
+    .hero-metrics { display: none; }
+}
+
+/* ===== WIDE TABLET HERO (1024-1200px): nudge HUDs ===== */
+@media (min-width: 981px) and (max-width: 1100px) {
+    .hud-top-left  { top: 22%; left: 3%; }
+    .hud-top-right { top: 14%; right: 3%; }
+    .hud-bottom-left  { bottom: 26%; left: 3%; }
+    .hud-bottom-right { bottom: 22%; right: 2%; }
+    .hud-chip { padding: 8px 10px; gap: 7px; font-size: 0.7rem; }
+    .f-python { left: -60px; }
+    .f-cv     { left: -60px; }
+    .f-tf     { right: -40px; }
+    .f-torch  { right: -40px; }
+}
+
+/* ===== PRINT / FORCED COLORS GUARD ===== */
+@media print {
+    .cursor, .cursor-follower,
+    .loader, #particleCanvas,
+    .hex-grid-bg, .orb,
+    .orbit-ring { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .navbar { position: static !important; }
 }

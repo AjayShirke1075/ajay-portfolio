@@ -217,32 +217,41 @@
                         <svg class="neural-overlay" viewBox="0 0 500 700" preserveAspectRatio="xMidYMid slice">
                             <defs>
                                 <radialGradient id="nodeGrad1" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.9"/>
-                                    <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                                    <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#F59E0B" stop-opacity="0" />
                                 </radialGradient>
                                 <radialGradient id="nodeGrad2" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.9"/>
-                                    <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+                                    <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#06B6D4" stop-opacity="0" />
                                 </radialGradient>
                                 <filter id="glow">
-                                    <feGaussianBlur stdDeviation="2" result="blur"/>
-                                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    <feGaussianBlur stdDeviation="2" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
                                 </filter>
                             </defs>
-                            <line x1="60" y1="120" x2="180" y2="200" stroke="rgba(245,158,11,0.18)" stroke-width="0.8"/>
-                            <line x1="180" y1="200" x2="320" y2="150" stroke="rgba(6,182,212,0.15)" stroke-width="0.8"/>
-                            <line x1="320" y1="150" x2="440" y2="250" stroke="rgba(139,92,246,0.18)" stroke-width="0.8"/>
-                            <line x1="60" y1="120" x2="100" y2="300" stroke="rgba(245,158,11,0.1)" stroke-width="0.6"/>
-                            <line x1="440" y1="250" x2="420" y2="400" stroke="rgba(6,182,212,0.12)" stroke-width="0.6"/>
-                            <line x1="100" y1="300" x2="250" y2="380" stroke="rgba(139,92,246,0.12)" stroke-width="0.6"/>
-                            <line x1="420" y1="400" x2="250" y2="380" stroke="rgba(245,158,11,0.1)" stroke-width="0.6"/>
-                            <circle cx="60" cy="120" r="5" fill="url(#nodeGrad1)" filter="url(#glow)"/>
-                            <circle cx="180" cy="200" r="4" fill="url(#nodeGrad2)" filter="url(#glow)"/>
-                            <circle cx="320" cy="150" r="6" fill="url(#nodeGrad1)" filter="url(#glow)"/>
-                            <circle cx="440" cy="250" r="4" fill="url(#nodeGrad2)" filter="url(#glow)"/>
-                            <circle cx="100" cy="300" r="3.5" fill="url(#nodeGrad1)" filter="url(#glow)"/>
-                            <circle cx="420" cy="400" r="4.5" fill="url(#nodeGrad2)" filter="url(#glow)"/>
-                            <circle cx="250" cy="380" r="5" fill="url(#nodeGrad1)" filter="url(#glow)"/>
+                            <line x1="60" y1="120" x2="180" y2="200" stroke="rgba(245,158,11,0.18)"
+                                stroke-width="0.8" />
+                            <line x1="180" y1="200" x2="320" y2="150" stroke="rgba(6,182,212,0.15)"
+                                stroke-width="0.8" />
+                            <line x1="320" y1="150" x2="440" y2="250" stroke="rgba(139,92,246,0.18)"
+                                stroke-width="0.8" />
+                            <line x1="60" y1="120" x2="100" y2="300" stroke="rgba(245,158,11,0.1)" stroke-width="0.6" />
+                            <line x1="440" y1="250" x2="420" y2="400" stroke="rgba(6,182,212,0.12)"
+                                stroke-width="0.6" />
+                            <line x1="100" y1="300" x2="250" y2="380" stroke="rgba(139,92,246,0.12)"
+                                stroke-width="0.6" />
+                            <line x1="420" y1="400" x2="250" y2="380" stroke="rgba(245,158,11,0.1)"
+                                stroke-width="0.6" />
+                            <circle cx="60" cy="120" r="5" fill="url(#nodeGrad1)" filter="url(#glow)" />
+                            <circle cx="180" cy="200" r="4" fill="url(#nodeGrad2)" filter="url(#glow)" />
+                            <circle cx="320" cy="150" r="6" fill="url(#nodeGrad1)" filter="url(#glow)" />
+                            <circle cx="440" cy="250" r="4" fill="url(#nodeGrad2)" filter="url(#glow)" />
+                            <circle cx="100" cy="300" r="3.5" fill="url(#nodeGrad1)" filter="url(#glow)" />
+                            <circle cx="420" cy="400" r="4.5" fill="url(#nodeGrad2)" filter="url(#glow)" />
+                            <circle cx="250" cy="380" r="5" fill="url(#nodeGrad1)" filter="url(#glow)" />
                         </svg>
 
                         <!-- HUD chips -->
@@ -267,7 +276,9 @@
                                 <span class="hud-chip-label">Model</span>
                                 <span class="hud-chip-val">Training</span>
                             </div>
-                            <div class="hud-progress-bar"><div class="hud-progress-fill"></div></div>
+                            <div class="hud-progress-bar">
+                                <div class="hud-progress-fill"></div>
+                            </div>
                         </div>
                         <div class="hud-chip hud-bottom-right">
                             <i class="fas fa-microchip"></i>
@@ -305,8 +316,12 @@
                     </div>
 
                     <!-- Orbiting dots -->
-                    <div class="orbit-ring orbit-1"><div class="orbit-dot"></div></div>
-                    <div class="orbit-ring orbit-2"><div class="orbit-dot"></div></div>
+                    <div class="orbit-ring orbit-1">
+                        <div class="orbit-dot"></div>
+                    </div>
+                    <div class="orbit-ring orbit-2">
+                        <div class="orbit-dot"></div>
+                    </div>
 
                 </div>
             </div>
@@ -340,78 +355,83 @@
                     <div class="holo-inner">
                         <div class="card-eyebrow"><i class="fas fa-id-card"></i> Profile</div>
                         <h3>Who I Am</h3>
-                        <p>I'm an <strong>Artificial Intelligence & Machine Learning Engineer </strong>focused on building intelligent products powered by Machine Learning, Deep Learning, Computer Vision, NLP, and Generative AI. My work revolves around transforming complex challenges into scalable, AI-driven solutions. </p>
-                        <p>From designing deep learning models to developing interactive AI applications, I combine technical expertise with innovation to create impactful systems. I am driven by a passion for advancing AI technology and delivering solutions that make a meaningful difference.</p>
-                            <div class="info-row">
-                                <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
-                                <div>
-                                    <span class="info-label">Education</span>
-                                    <span class="info-val">B.E. — Artificial Intelligence</span>
-                                </div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-icon"><i class="fas fa-location-dot"></i></div>
-                                <div>
-                                    <span class="info-label">Location</span>
-                                    <span class="info-val">Navi Mumbai, India</span>
-                                </div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-icon"><i class="fas fa-briefcase"></i></div>
-                                <div>
-                                    <span class="info-label">Status</span>
-                                    <span class="info-val avail">● Open to Opportunities</span>
-                                </div>
+                        <p>I'm an <strong>Artificial Intelligence & Machine Learning Engineer </strong>focused on
+                            building intelligent products powered by Machine Learning, Deep Learning, Computer Vision,
+                            NLP, and Generative AI. My work revolves around transforming complex challenges into
+                            scalable, AI-driven solutions. </p>
+                        <p>From designing deep learning models to developing interactive AI applications, I combine
+                            technical expertise with innovation to create impactful systems. I am driven by a passion
+                            for advancing AI technology and delivering solutions that make a meaningful difference.</p>
+                        <div class="info-row">
+                            <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div>
+                                <span class="info-label">Education</span>
+                                <span class="info-val">B.E. — Artificial Intelligence</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Skills card -->
-                <div class="holo-card" data-aos="fade-left" data-aos-delay="100">
-                    <div class="holo-border"></div>
-                    <div class="holo-inner">
-                        <div class="card-eyebrow"><i class="fas fa-microchip"></i> Stack</div>
-                        <h3>Technical Arsenal</h3>
-
-                        <div class="skill-block">
-                            <div class="skill-block-title"><span class="dot dot-gold"></span> AI / Machine Learning
-                            </div>
-                            <div class="tag-cloud">
-                                <span class="stag gold">Machine Learning</span>
-                                <span class="stag gold">Deep Learning</span>
-                                <span class="stag gold">TensorFlow</span>
-                                <span class="stag gold">PyTorch</span>
-                                <span class="stag gold">OpenCV</span>
-                                <span class="stag gold">NLP</span>
-                                <span class="stag gold">Scikit-learn</span>
+                        <div class="info-row">
+                            <div class="info-icon"><i class="fas fa-location-dot"></i></div>
+                            <div>
+                                <span class="info-label">Location</span>
+                                <span class="info-val">Navi Mumbai, India</span>
                             </div>
                         </div>
-                        <div class="skill-block">
-                            <div class="skill-block-title"><span class="dot dot-violet"></span> Development</div>
-                            <div class="tag-cloud">
-                                <span class="stag violet">Python</span>
-                                <span class="stag violet">Streamlit</span>
-                                <span class="stag violet">Flask</span>
-                                <span class="stag violet">HTML/CSS</span>
-                                <span class="stag violet">JavaScript</span>
-                                <span class="stag violet">PyWebIO</span>
-                            </div>
-                        </div>
-                        <div class="skill-block">
-                            <div class="skill-block-title"><span class="dot dot-rose"></span> Tools & Libraries</div>
-                            <div class="tag-cloud">
-                                <span class="stag rose">NumPy</span>
-                                <span class="stag rose">Pandas</span>
-                                <span class="stag rose">Plotly</span>
-                                <span class="stag rose">Jupyter</span>
-                                <span class="stag rose">Git</span>
-                                <span class="stag rose">VS Code</span>
+                        <div class="info-row">
+                            <div class="info-icon"><i class="fas fa-briefcase"></i></div>
+                            <div>
+                                <span class="info-label">Status</span>
+                                <span class="info-val avail">● Open to Opportunities</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Skills card -->
+            <div class="holo-card" data-aos="fade-left" data-aos-delay="100">
+                <div class="holo-border"></div>
+                <div class="holo-inner">
+                    <div class="card-eyebrow"><i class="fas fa-microchip"></i> Stack</div>
+                    <h3>Technical Arsenal</h3>
+
+                    <div class="skill-block">
+                        <div class="skill-block-title"><span class="dot dot-gold"></span> AI / Machine Learning
+                        </div>
+                        <div class="tag-cloud">
+                            <span class="stag gold">Machine Learning</span>
+                            <span class="stag gold">Deep Learning</span>
+                            <span class="stag gold">TensorFlow</span>
+                            <span class="stag gold">PyTorch</span>
+                            <span class="stag gold">OpenCV</span>
+                            <span class="stag gold">NLP</span>
+                            <span class="stag gold">Scikit-learn</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <div class="skill-block-title"><span class="dot dot-violet"></span> Development</div>
+                        <div class="tag-cloud">
+                            <span class="stag violet">Python</span>
+                            <span class="stag violet">Streamlit</span>
+                            <span class="stag violet">Flask</span>
+                            <span class="stag violet">HTML/CSS</span>
+                            <span class="stag violet">JavaScript</span>
+                            <span class="stag violet">PyWebIO</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <div class="skill-block-title"><span class="dot dot-rose"></span> Tools & Libraries</div>
+                        <div class="tag-cloud">
+                            <span class="stag rose">NumPy</span>
+                            <span class="stag rose">Pandas</span>
+                            <span class="stag rose">Plotly</span>
+                            <span class="stag rose">Jupyter</span>
+                            <span class="stag rose">Git</span>
+                            <span class="stag rose">VS Code</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </section>
 

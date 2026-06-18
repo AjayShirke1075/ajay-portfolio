@@ -255,6 +255,7 @@ if (hamburger && navLinks) {
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('open');
         navLinks.classList.toggle('open');
+        document.body.classList.toggle('no-scroll');
     });
 }
 
@@ -262,6 +263,7 @@ document.querySelectorAll('.nav-item').forEach(link => {
     link.addEventListener('click', () => {
         if (navLinks)  navLinks.classList.remove('open');
         if (hamburger) hamburger.classList.remove('open');
+        document.body.classList.remove('no-scroll');
     });
 });
 
