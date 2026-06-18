@@ -23,7 +23,90 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CRITICAL MOBILE RESPONSIVE OVERRIDES (inline = always fresh)
+         ═══════════════════════════════════════════════════════════ -->
+    <style>
+        /* ── 1. MOBILE NAV OVERLAY FIX ──────────────────────────────────
+           Chrome/Edge: backdrop-filter on .navbar creates a CSS containing
+           block, trapping position:fixed children (.nav-links) inside the
+           ~60px navbar strip. Removing it on mobile lets the overlay span
+           the full viewport so ALL 6 nav links are visible.            */
+        @media (max-width: 900px) {
+            .navbar {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(3, 3, 10, 0.95) !important;
+            }
+
+            .nav-links {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                z-index: 9999 !important;
+            }
+
+            .hamburger {
+                z-index: 10000 !important;
+            }
+        }
+
+        /* ── 2. HIDE RESUME BUTTON on small phones (≤640px) ─────────── */
+        @media (max-width: 640px) {
+            .nav-cta-btn {
+                display: none !important;
+            }
+
+            .nav-actions {
+                gap: 8px;
+            }
+        }
+
+        /* ── 3. PROJECT FILTERS — horizontal scroll instead of wrap ──── */
+        @media (max-width: 768px) {
+            .proj-filters {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none !important;
+                padding-bottom: 6px;
+                justify-content: flex-start !important;
+            }
+
+            .proj-filters::-webkit-scrollbar {
+                display: none;
+            }
+
+            .pf-btn {
+                flex-shrink: 0 !important;
+            }
+        }
+
+        /* ── 4. GENERAL overflow guard ───────────────────────────────── */
+        html,
+        body {
+            overflow-x: hidden !important;
+        }
+
+        section,
+        footer {
+            overflow-x: hidden;
+        }
+
+        /* ── 5. iOS INPUT ZOOM PREVENTION ────────────────────────────── */
+        @media (max-width: 768px) {
+
+            input,
+            textarea,
+            select {
+                font-size: 16px !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -949,7 +1032,7 @@
 
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=2"></script>
 </body>
 
 </html>

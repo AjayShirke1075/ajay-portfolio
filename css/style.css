@@ -2911,6 +2911,19 @@ body::before {
 
 /* ===== MOBILE NAV ===== */
 @media (max-width: 900px) {
+    /*
+     * CRITICAL: Remove backdrop-filter from .navbar on mobile.
+     * In Chrome/Edge, backdrop-filter creates a CSS containing block,
+     * which traps position:fixed children (the nav overlay) inside the
+     * ~60px navbar strip instead of covering the full viewport.
+     * Removing it here permanently fixes the overlay for all mobile screens.
+     */
+    .navbar {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(3, 3, 10, 0.95) !important;
+    }
+
     .nav-links {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -2923,11 +2936,11 @@ body::before {
         gap: 12px;
         transform: translateX(100%);
         transition: transform 0.4s var(--ease);
-        z-index: 998;
+        z-index: 9999;
     }
     .nav-links.open { transform: translateX(0); }
     .nav-item { padding: 14px 28px; font-size: 1.1rem; border-radius: 12px; width: 200px; text-align: center; }
-    .hamburger { display: flex; z-index: 999; }
+    .hamburger { display: flex; z-index: 10000; }
     .nav-inner { padding: 0 20px; }
     .nav-icon-btn { display: none; }
 }
@@ -3301,12 +3314,8 @@ section, footer {
 }
 
 /* ===== BODY SCROLL LOCK (mobile nav overlay) ===== */
-/* body.no-scroll already set at line ~110; adding position:fixed for iOS */
-body.no-scroll {
-    position: fixed;
-    left: 0;
-    right: 0;
-}
+/* overflow:hidden is set at line ~110; position:fixed handled via JS */
+/* Do NOT add position:fixed here — it causes scroll-position jumps on iOS */
 
 /* ===== PREVENT iOS INPUT ZOOM (requires 16px min) ===== */
 @media (max-width: 768px) {
@@ -3379,15 +3388,32 @@ body.no-scroll {
     /* Timeline tighter */
     .tl-entry { margin-bottom: 32px; }
 
-    /* Project filters */
-    .proj-filters { gap: 6px; margin-bottom: 32px; }
-    .pf-btn { padding: 7px 13px; font-size: 0.78rem; }
+    /* Project filters — horizontal scroll on mobile so they don't wrap */
+    .proj-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 6px;
+        justify-content: flex-start;
+        margin-bottom: 32px;
+    }
+    .proj-filters::-webkit-scrollbar { display: none; }
+    .pf-btn { flex-shrink: 0; padding: 7px 13px; font-size: 0.78rem; }
 
     /* About grid tighter gap */
     .about-grid { gap: 16px; }
 
     /* Nav brand size on very small */
     .nav-inner { gap: 10px; }
+}
+
+/* ===== MEDIUM PHONE (≤640px): hide Resume CTA to uncrowd navbar ===== */
+@media (max-width: 640px) {
+    .nav-cta-btn { display: none; }
+    .nav-actions { gap: 8px; }
+    /* Footer copyright — prevent long text overflow */
+    .footer-bottom span { word-break: break-word; font-size: 0.76rem; }
 }
 
 /* ===== TINY PHONE (≤380px): metrics stack ===== */
