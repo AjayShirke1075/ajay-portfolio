@@ -14,95 +14,30 @@
     <meta property="og:description" content="Building Intelligent Systems that make a difference.">
     <meta property="og:type" content="website">
 
-    <!-- Google Fonts: Syne + DM Sans + JetBrains Mono -->
+    <!-- Google Fonts: Outfit + Plus Jakarta Sans + DM Sans + JetBrains Mono -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=3">
+    <!-- Obsidian Neural Dark Theme Enhancement -->
+    <link rel="stylesheet" href="css/theme-enhance.css?v=3">
 
     <!-- ═══════════════════════════════════════════════════════════
          CRITICAL MOBILE RESPONSIVE OVERRIDES (inline = always fresh)
          ═══════════════════════════════════════════════════════════ -->
     <style>
-        /* ── 1. MOBILE NAV OVERLAY FIX ──────────────────────────────────
-           Chrome/Edge: backdrop-filter on .navbar creates a CSS containing
-           block, trapping position:fixed children (.nav-links) inside the
-           ~60px navbar strip. Removing it on mobile lets the overlay span
-           the full viewport so ALL 6 nav links are visible.            */
-        @media (max-width: 900px) {
-            .navbar {
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-                background: rgba(3, 3, 10, 0.95) !important;
-            }
-
-            .nav-links {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: 0 !important;
-                z-index: 9999 !important;
-            }
-
-            .hamburger {
-                z-index: 10000 !important;
-            }
-        }
-
-        /* ── 2. HIDE RESUME BUTTON on small phones (≤640px) ─────────── */
-        @media (max-width: 640px) {
-            .nav-cta-btn {
-                display: none !important;
-            }
-
-            .nav-actions {
-                gap: 8px;
-            }
-        }
-
-        /* ── 3. PROJECT FILTERS — horizontal scroll instead of wrap ──── */
-        @media (max-width: 768px) {
-            .proj-filters {
-                flex-wrap: nowrap !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none !important;
-                padding-bottom: 6px;
-                justify-content: flex-start !important;
-            }
-
-            .proj-filters::-webkit-scrollbar {
-                display: none;
-            }
-
-            .pf-btn {
-                flex-shrink: 0 !important;
-            }
-        }
-
-        /* ── 4. GENERAL overflow guard ───────────────────────────────── */
-        html,
-        body {
+        /* Base Viewport & Touch Optimization */
+        html, body {
             overflow-x: hidden !important;
+            width: 100%;
         }
-
-        section,
-        footer {
-            overflow-x: hidden;
-        }
-
-        /* ── 5. iOS INPUT ZOOM PREVENTION ────────────────────────────── */
         @media (max-width: 768px) {
-
-            input,
-            textarea,
-            select {
+            input, textarea, select {
                 font-size: 16px !important;
             }
         }
@@ -111,9 +46,18 @@
 
 <body>
 
+    <!-- Neural Activity Bar (top of page) -->
+    <div class="neural-activity-bar" id="neuralBar"></div>
+
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- Live Status Ticker -->
+    <div class="live-ticker" id="liveTicker">
+        <div class="ticker-dot"></div>
+        <div class="ticker-text">Neural Engine: <span>ACTIVE</span> &nbsp;|&nbsp; Models: <span>Loaded</span> &nbsp;|&nbsp; Status: <span id="tickerStatus">Ready</span></div>
+    </div>
 
     <!-- Loader -->
     <div class="loader" id="loader">
@@ -428,7 +372,7 @@
                 <div class="tag-line"></div>
                 <span>// ABOUT_ME</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">The Engineer<br><span class="grad-text">Behind
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.about_me">The Engineer<br><span class="grad-text">Behind
                     the Code</span></h2>
 
             <div class="about-grid">
@@ -514,7 +458,43 @@
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Interactive AI Terminal Component -->
+            <div class="interactive-terminal" data-aos="fade-up" data-aos-delay="150">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot dot-red"></span>
+                        <span class="terminal-dot dot-yellow"></span>
+                        <span class="terminal-dot dot-green"></span>
+                    </div>
+                    <div class="terminal-title"><i class="fas fa-terminal"></i> ajay@ai-core ~ bash (Interactive AI Console)</div>
+                    <div class="terminal-badge">LIVE TENSOR CORE</div>
+                </div>
+                <div class="terminal-body" id="terminalOutput">
+                    <div style="color: var(--txt-muted); margin-bottom: 8px;">// Welcome to Ajay Shirke's Neural Command Center.</div>
+                    <div style="color: var(--txt-muted); margin-bottom: 12px;">// Type a command or click one of the quick chips below:</div>
+                    <div style="color: var(--cyan);"><span style="color: var(--indigo); font-weight:700;">ajay@ai-core:~$</span> welcome</div>
+                    <div style="margin: 6px 0 14px; padding-left: 12px; border-left: 2px solid var(--indigo);">
+                        <strong style="color: #fff;">Ajay Shirke</strong> — AI/ML Engineer &amp; Python Specialist<br>
+                        Specializing in Deep Learning (CNNs), Computer Vision (OpenCV), and Production ML Systems.<br>
+                        Ready for high-impact internship &amp; full-time AI opportunities.
+                    </div>
+                </div>
+                <div class="terminal-chips">
+                    <span style="font-size: 0.72rem; color: var(--txt-muted); margin-right: 4px; align-self: center;">Quick commands:</span>
+                    <button class="terminal-chip" data-cmd="skills">skills</button>
+                    <button class="terminal-chip" data-cmd="projects">projects</button>
+                    <button class="terminal-chip" data-cmd="whoami">whoami</button>
+                    <button class="terminal-chip" data-cmd="metrics">metrics</button>
+                    <button class="terminal-chip" data-cmd="contact">contact</button>
+                    <button class="terminal-chip" data-cmd="clear">clear</button>
+                </div>
+                <div class="terminal-input-row">
+                    <span class="terminal-prompt">ajay@ai-core:~$</span>
+                    <input type="text" id="terminalInput" class="terminal-input" placeholder="Type a command (try 'skills' or 'projects')..." autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -526,7 +506,7 @@
                 <div class="tag-line"></div>
                 <span>// SERVICES</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">What I <span class="grad-text">Build</span>
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.services">What I <span class="grad-text">Build</span>
             </h2>
 
             <div class="services-grid">
@@ -608,7 +588,7 @@
                 <div class="tag-line"></div>
                 <span>// TIMELINE</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">My <span class="grad-text">Journey</span></h2>
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.timeline">My <span class="grad-text">Journey</span></h2>
 
             <div class="tl-wrap">
                 <div class="tl-spine"></div>
@@ -691,7 +671,7 @@
                 <div class="tag-line"></div>
                 <span>// METRICS</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">Numbers That <span
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.metrics">Numbers That <span
                     class="grad-text">Speak</span></h2>
 
             <div class="ach-grid">
@@ -735,7 +715,7 @@
                 <div class="tag-line"></div>
                 <span>// PORTFOLIO</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">Featured <span
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.projects">Featured <span
                     class="grad-text">Projects</span></h2>
 
             <!-- Filter -->
@@ -897,7 +877,7 @@
                 <div class="tag-line"></div>
                 <span>// CONTACT</span>
             </div>
-            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50">Let's <span class="grad-text">Connect</span>
+            <h2 class="section-h2" data-aos="fade-up" data-aos-delay="50" data-prefix="// sys.contact">Let's <span class="grad-text">Connect</span>
             </h2>
 
             <div class="contact-grid">
@@ -937,10 +917,15 @@
                             </a>
                         </div>
 
-                        <a href="mailto:ajayshirke1075@gmail.com" class="cta-primary wide-cta" id="contactBtn">
-                            <span>Send Me a Message</span>
-                            <div class="cta-arrow"><i class="fas fa-arrow-right"></i></div>
-                        </a>
+                        <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+                            <a href="mailto:ajayshirke1075@gmail.com" class="cta-primary wide-cta" id="contactBtn" style="flex: 1; justify-content: center;">
+                                <span>Send Me a Message</span>
+                                <div class="cta-arrow"><i class="fas fa-arrow-right"></i></div>
+                            </a>
+                            <button type="button" class="cta-ghost" id="copyEmailBtn" style="cursor: pointer;">
+                                <i class="fas fa-copy"></i> <span>Copy Email</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1030,9 +1015,17 @@
         </div>
     </footer>
 
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/script.js?v=2"></script>
+    <script src="js/script.js?v=3"></script>
+    <!-- Obsidian Neural Theme JS -->
+    <script src="js/enhance.js?v=3"></script>
 </body>
 
 </html>
