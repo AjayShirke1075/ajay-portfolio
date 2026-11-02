@@ -53,94 +53,193 @@ function hideLoader() {
 /* ============================================================
    2. PARTICLE CANVAS — NEURAL NETWORK BACKGROUND
    ============================================================ */
-(function initParticles() {
+/* ============================================================
+   2. SYNAPTIC NEURAL NETWORK CANVAS (Action Potentials & Synapses)
+   ============================================================ */
+(function initSynapticNetwork() {
     const canvas = document.getElementById('particleCanvas');
     if (!canvas) return;
 
-    const ctx    = canvas.getContext('2d');
-    let W        = canvas.width  = window.innerWidth;
-    let H        = canvas.height = window.innerHeight;
-    let mouse    = { x: W / 2, y: H / 2 };
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    let mouse = { x: -1000, y: -1000, radius: 180 };
 
-    const isMobile   = W < 768;
-    const count      = isMobile ? 50 : 110;
-    const maxDist    = isMobile ? 120 : 150;
+    const isMobile = W < 768;
+    const count = isMobile ? 45 : 95;
+    const maxDist = isMobile ? 120 : 155;
 
-    const COLORS = ['rgba(245,158,11,', 'rgba(139,92,246,', 'rgba(6,182,212,'];
+    // AI/ML Synaptic Colors: Synaptic Cyan, Tensor Violet, Matrix Jade
+    const NEURON_COLORS = [
+        { r: 0, g: 242, b: 254 },   // Synaptic Cyan
+        { r: 139, g: 92, b: 246 },  // Tensor Violet
+        { r: 0, g: 245, b: 160 }    // Matrix Jade
+    ];
 
-    const dots = Array.from({ length: count }, () => ({
-        x   : Math.random() * W,
-        y   : Math.random() * H,
-        vx  : (Math.random() - 0.5) * 0.5,
-        vy  : (Math.random() - 0.5) * 0.5,
-        r   : Math.random() * 2 + 1,
-        c   : COLORS[Math.floor(Math.random() * COLORS.length)],
-        a   : Math.random() * 0.6 + 0.2
-    }));
+    // Neurons
+    const neurons = Array.from({ length: count }, () => {
+        const col = NEURON_COLORS[Math.floor(Math.random() * NEURON_COLORS.length)];
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.45,
+            vy: (Math.random() - 0.5) * 0.45,
+            baseRadius: Math.random() * 2 + 1.2,
+            radius: Math.random() * 2 + 1.2,
+            col: col,
+            potential: Math.random() * 0.5,
+            targetPotential: 0,
+            pulseTimer: Math.random() * 200
+        };
+    });
+
+    // Action Potential Pulses (impulses traveling along synapses)
+    const impulses = [];
 
     document.addEventListener('mousemove', e => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
     });
 
+    document.addEventListener('mouseleave', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+    });
+
     window.addEventListener('resize', () => {
-        W = canvas.width  = window.innerWidth;
+        W = canvas.width = window.innerWidth;
         H = canvas.height = window.innerHeight;
     });
+
+    function fireSynapse(fromIdx, toIdx) {
+        if (impulses.length > 35) return;
+        impulses.push({
+            from: fromIdx,
+            to: toIdx,
+            progress: 0,
+            speed: 0.018 + Math.random() * 0.015,
+            color: neurons[fromIdx].col
+        });
+    }
 
     function draw() {
         ctx.clearRect(0, 0, W, H);
 
-        // Update + draw dots
-        dots.forEach(d => {
-            d.x += d.vx;
-            d.y += d.vy;
+        // Update and draw neurons
+        for (let i = 0; i < neurons.length; i++) {
+            const n = neurons[i];
 
-            // Mouse attraction (subtle)
-            const dx = mouse.x - d.x;
-            const dy = mouse.y - d.y;
-            const md = Math.sqrt(dx * dx + dy * dy);
-            if (md < 200) {
-                d.vx += dx * 0.0001;
-                d.vy += dy * 0.0001;
+            n.x += n.vx;
+            n.y += n.vy;
+
+            // Bounce on edges
+            if (n.x < 0 || n.x > W) n.vx *= -1;
+            if (n.y < 0 || n.y > H) n.vy *= -1;
+
+            // Mouse excitation (synaptic stimulus)
+            const dx = mouse.x - n.x;
+            const dy = mouse.y - n.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.radius) {
+                const force = (1 - dist / mouse.radius);
+                n.potential = Math.min(1.0, n.potential + force * 0.08);
+                n.radius = n.baseRadius * (1 + force * 1.2);
+            } else {
+                n.potential = Math.max(0.1, n.potential * 0.985);
+                n.radius = n.baseRadius * (1 + n.potential * 0.4);
             }
 
-            // Speed limit
-            const spd = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
-            if (spd > 1.2) { d.vx *= 0.98; d.vy *= 0.98; }
+            // Periodic firing of action potentials
+            n.pulseTimer++;
+            if (n.pulseTimer > 240 + Math.random() * 120) {
+                n.pulseTimer = 0;
+                n.potential = 0.9;
+                // Find closest neighbor and fire
+                let closest = -1;
+                let minDist = maxDist;
+                for (let j = 0; j < neurons.length; j++) {
+                    if (i === j) continue;
+                    const d = Math.hypot(neurons[j].x - n.x, neurons[j].y - n.y);
+                    if (d < minDist) {
+                        minDist = d;
+                        closest = j;
+                    }
+                }
+                if (closest !== -1) fireSynapse(i, closest);
+            }
 
-            // Bounce
-            if (d.x < 0 || d.x > W) d.vx *= -1;
-            if (d.y < 0 || d.y > H) d.vy *= -1;
-
+            // Draw neuron halo (activation aura)
+            const alpha = 0.3 + n.potential * 0.6;
             ctx.beginPath();
-            ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-            ctx.fillStyle = d.c + d.a + ')';
+            ctx.arc(n.x, n.y, n.radius * 3.2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${n.col.r}, ${n.col.g}, ${n.col.b}, ${alpha * 0.18})`;
             ctx.fill();
 
-            // Glow effect
+            // Draw neuron nucleus
             ctx.beginPath();
-            ctx.arc(d.x, d.y, d.r * 3, 0, Math.PI * 2);
-            ctx.fillStyle = d.c + (d.a * 0.12) + ')';
+            ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${n.col.r}, ${n.col.g}, ${n.col.b}, ${alpha})`;
             ctx.fill();
-        });
+        }
 
-        // Draw connections
-        for (let i = 0; i < dots.length; i++) {
-            for (let j = i + 1; j < dots.length; j++) {
-                const dx = dots[i].x - dots[j].x;
-                const dy = dots[i].y - dots[j].y;
+        // Draw synaptic connections (axons)
+        for (let i = 0; i < neurons.length; i++) {
+            for (let j = i + 1; j < neurons.length; j++) {
+                const dx = neurons[i].x - neurons[j].x;
+                const dy = neurons[i].y - neurons[j].y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
+
                 if (dist < maxDist) {
-                    const alpha = (1 - dist / maxDist) * 0.18;
+                    const norm = 1 - dist / maxDist;
+                    const axonAlpha = norm * 0.16 + (neurons[i].potential + neurons[j].potential) * 0.12;
+
                     ctx.beginPath();
-                    ctx.moveTo(dots[i].x, dots[i].y);
-                    ctx.lineTo(dots[j].x, dots[j].y);
-                    ctx.strokeStyle = `rgba(139,92,246,${alpha})`;
-                    ctx.lineWidth = 0.6;
+                    ctx.moveTo(neurons[i].x, neurons[i].y);
+                    ctx.lineTo(neurons[j].x, neurons[j].y);
+                    ctx.strokeStyle = `rgba(99, 102, 241, ${Math.min(0.5, axonAlpha)})`;
+                    ctx.lineWidth = norm > 0.6 ? 0.9 : 0.5;
                     ctx.stroke();
+
+                    // Chance of firing action potential if both excited
+                    if (Math.random() < 0.002 && neurons[i].potential > 0.4) {
+                        fireSynapse(i, j);
+                    }
                 }
             }
+        }
+
+        // Draw and update active action potential pulses
+        for (let k = impulses.length - 1; k >= 0; k--) {
+            const imp = impulses[k];
+            imp.progress += imp.speed;
+
+            if (imp.progress >= 1) {
+                // Stimulate target neuron upon arrival
+                if (neurons[imp.to]) {
+                    neurons[imp.to].potential = Math.min(1.0, neurons[imp.to].potential + 0.35);
+                }
+                impulses.splice(k, 1);
+                continue;
+            }
+
+            const nFrom = neurons[imp.from];
+            const nTo = neurons[imp.to];
+            if (!nFrom || !nTo) {
+                impulses.splice(k, 1);
+                continue;
+            }
+
+            const currX = nFrom.x + (nTo.x - nFrom.x) * imp.progress;
+            const currY = nFrom.y + (nTo.y - nFrom.y) * imp.progress;
+
+            // Draw electrical spark packet
+            ctx.beginPath();
+            ctx.arc(currX, currY, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${imp.color.r}, ${imp.color.g}, ${imp.color.b}, 0.95)`;
+            ctx.shadowColor = `rgba(${imp.color.r}, ${imp.color.g}, ${imp.color.b}, 0.8)`;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0; // reset
         }
 
         requestAnimationFrame(draw);

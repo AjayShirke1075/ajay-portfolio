@@ -100,6 +100,44 @@ document.addEventListener('DOMContentLoaded', () => {
   • GitHub: <a href="https://github.com/AjayShirke1075" target="_blank" style="color: var(--cyan);">github.com/AjayShirke1075</a><br>
   • LinkedIn: <a href="https://www.linkedin.com/in/ajay-shirke-862334322/" target="_blank" style="color: var(--cyan);">linkedin.com/in/ajay-shirke-862334322/</a>
 </div>
+`,
+        train: `
+<div style="line-height: 1.6; font-family: var(--font-mono); font-size: 0.8rem;">
+  <span style="color: #F59E0B; font-weight: 700;">[TRAINING PIPELINE]</span> Initializing PyTorch DataLoader (batch_size=64, optimizer=AdamW, lr=3e-4)...<br>
+  <span style="color: #8B5CF6;">Epoch 1/5:</span> [████████████] loss: 0.4320 · val_acc: 87.2% · time: 1.2s<br>
+  <span style="color: #8B5CF6;">Epoch 2/5:</span> [████████████] loss: 0.2185 · val_acc: 92.4% · time: 1.1s<br>
+  <span style="color: #8B5CF6;">Epoch 3/5:</span> [████████████] loss: 0.0892 · val_acc: 95.8% · time: 1.1s<br>
+  <span style="color: #8B5CF6;">Epoch 4/5:</span> [████████████] loss: 0.0415 · val_acc: 97.6% · time: 1.2s<br>
+  <span style="color: #10B981;">Epoch 5/5:</span> [████████████] loss: 0.0241 · val_acc: <strong style="color: #10B981;">98.4%</strong> · <strong style="color:#00F5A0;">CONVERGED!</strong><br>
+  <span style="color: var(--cyan);">✓ Model checkpoint serialized:</span> <span style="color: #FFF;">weights_best_v2.pt (TensorRT engine optimized)</span>
+</div>
+`,
+        predict: `
+<div style="line-height: 1.6; font-family: var(--font-mono); font-size: 0.8rem;">
+  <span style="color: var(--cyan); font-weight: 700;">[INFERENCE ENGINE]</span> Loading input tensor shape: <span style="color:#FCD34D;">[1, 3, 224, 224]</span><br>
+  • Preprocessing: Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])<br>
+  • Forward pass runtime: <strong style="color: #10B981;">7.8ms</strong> (NVIDIA CUDA FP16)<br>
+  • Softmax Distribution:<br>
+    &nbsp;&nbsp;[0] Class 'Positive / Joy'    : <span style="color:#00F5A0; font-weight:700;">98.42%</span> [███████████████████░]<br>
+    &nbsp;&nbsp;[1] Class 'Neutral Focus'     : <span style="color:#94A3B8;">1.28%</span>  [░░░░░░░░░░░░░░░░░░░░]<br>
+    &nbsp;&nbsp;[2] Class 'Negative / Strain' : <span style="color:#94A3B8;">0.30%</span>  [░░░░░░░░░░░░░░░░░░░░]<br>
+  <span style="color: #10B981; font-weight:700;">✓ Top Prediction: Positive / High Confidence (98.4%)</span>
+</div>
+`,
+        architecture: `
+<div style="line-height: 1.5; font-family: var(--font-mono); font-size: 0.78rem; color: #CBD5E1;">
+  <span style="color: #6366F1; font-weight: 700;">[PRODUCTION AI ARCHITECTURE]</span><br>
+  [Client App: Web/Camera] <br>
+      │ (HTTP REST / WebSocket)<br>
+      ▼<br>
+  [FastAPI / Flask Microservice] ──▶ [Preprocess: OpenCV (Resize, CLAHE, Augment)]<br>
+      │<br>
+      ▼<br>
+  [PyTorch / TensorRT Engine] ─────▶ [Backbone: CNN / Multi-Head Transformer]<br>
+      │                             [Latent Dim: 512 · GELU Activation]<br>
+      ▼<br>
+  [Softmax Head] ──────────────────▶ [Calibrated Probabilities & JSON Telemetry]<br>
+</div>
 `
     };
 
@@ -290,5 +328,149 @@ document.addEventListener('DOMContentLoaded', () => {
             accChipVal.textContent = val + '%';
         }, 2400);
     }
+
+    /* ============================================================
+       7. INTERACTIVE NEURAL ARCHITECTURE SIMULATOR
+       ============================================================ */
+    const labModalityBtns = document.querySelectorAll('.lab-mode-btn');
+    const runInferenceBtn = document.getElementById('runInferenceBtn');
+    const inputDim = document.getElementById('inputDim');
+    const hidden1Label = document.getElementById('hidden1Label');
+    const hidden2Label = document.getElementById('hidden2Label');
+    const outLabel1 = document.getElementById('outLabel1');
+    const outPct1 = document.getElementById('outPct1');
+    const outBar1 = document.getElementById('outBar1');
+    const outLabel2 = document.getElementById('outLabel2');
+    const outPct2 = document.getElementById('outPct2');
+    const outBar2 = document.getElementById('outBar2');
+    const labLatency = document.getElementById('labLatency');
+    const labLoss = document.getElementById('labLoss');
+    const labBackbone = document.getElementById('labBackbone');
+
+    const modalities = {
+        vision: {
+            dim: '[1, 3, 224, 224]',
+            h1: 'CONV2D + BN<br><span class="col-dim">[64 @ 3x3]</span>',
+            h2: 'DENSE + GELU<br><span class="col-dim">[256 Embeddings]</span>',
+            l1: 'Emotion: Joy / Confident',
+            p1: '98.4%',
+            l2: 'Neutral / Focused',
+            p2: '1.4%',
+            backbone: 'ResNet50 + MultiHeadAttn',
+            latency: '8.4 ms',
+            loss: '0.0241 (Converged)'
+        },
+        nlp: {
+            dim: '[1, 512 Tokens]',
+            h1: 'MULTI-HEAD ATTN<br><span class="col-dim">[12 Heads, d=64]</span>',
+            h2: 'FEED-FORWARD<br><span class="col-dim">[768 Hidden Dim]</span>',
+            l1: 'Sentiment: Highly Positive',
+            p1: '99.2%',
+            l2: 'Informational / Neutral',
+            p2: '0.7%',
+            backbone: 'DistilBERT + BiGRU Head',
+            latency: '11.2 ms',
+            loss: '0.0194 (Optimal)'
+        },
+        audio: {
+            dim: '[1, 128 Mel-Bands]',
+            h1: 'SPEC-CONV2D<br><span class="col-dim">[32 Filters, k=5]</span>',
+            h2: 'BILSTM TEMPORAL<br><span class="col-dim">[128 Bi-directional]</span>',
+            l1: 'Voice: Confident Speaker',
+            p1: '97.8%',
+            l2: 'Hesitant / Low Energy',
+            p2: '2.0%',
+            backbone: 'CNN-BiLSTM Spectrogram',
+            latency: '9.6 ms',
+            loss: '0.0312 (Converged)'
+        }
+    };
+
+    let currentModality = 'vision';
+
+    labModalityBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            labModalityBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const modKey = btn.getAttribute('data-modality');
+            if (modalities[modKey]) {
+                currentModality = modKey;
+                const d = modalities[modKey];
+                if (inputDim) inputDim.textContent = d.dim;
+                if (hidden1Label) hidden1Label.innerHTML = d.h1;
+                if (hidden2Label) hidden2Label.innerHTML = d.h2;
+                if (outLabel1) outLabel1.textContent = d.l1;
+                if (outPct1) outPct1.textContent = d.p1;
+                if (outBar1) outBar1.style.width = d.p1;
+                if (outLabel2) outLabel2.textContent = d.l2;
+                if (outPct2) outPct2.textContent = d.p2;
+                if (outBar2) outBar2.style.width = d.p2;
+                if (labBackbone) labBackbone.textContent = d.backbone;
+                if (labLatency) labLatency.textContent = d.latency;
+                if (labLoss) labLoss.textContent = d.loss;
+                triggerForwardPassAnimation();
+            }
+        });
+    });
+
+    if (runInferenceBtn) {
+        runInferenceBtn.addEventListener('click', () => {
+            triggerForwardPassAnimation();
+        });
+    }
+
+    function triggerForwardPassAnimation() {
+        const lab = document.getElementById('neuralLab');
+        if (!lab) return;
+
+        lab.classList.remove('running');
+        void lab.offsetWidth;
+        lab.classList.add('running');
+
+        const layers = ['#layerInput', '#layerHidden1', '#layerHidden2', '#layerOutput'];
+        layers.forEach((sel, idx) => {
+            setTimeout(() => {
+                const el = lab.querySelector(sel);
+                if (el) {
+                    el.classList.add('pulse-active');
+                    setTimeout(() => el.classList.remove('pulse-active'), 500);
+                }
+            }, idx * 130);
+        });
+
+        if (labLatency) {
+            const base = parseFloat(modalities[currentModality].latency);
+            const variant = (base + (Math.random() * 0.8 - 0.4)).toFixed(1);
+            labLatency.textContent = `${variant} ms`;
+        }
+    }
+
+    /* ============================================================
+       8. LIVE NEURAL TELEMETRY HUD JITTER
+       ============================================================ */
+    const hudLatency = document.getElementById('hudLatency');
+    const hudLoss = document.getElementById('hudLoss');
+    const hudModel = document.getElementById('hudModel');
+
+    const modelsCycle = ['VisionTransformer-v2', 'ResNet50-FER', 'DistilBERT-Sentiment', 'YOLOv8-Small'];
+    let mIdx = 0;
+
+    setInterval(() => {
+        if (hudLatency) {
+            const lat = (10.5 + Math.random() * 2.5).toFixed(1);
+            hudLatency.textContent = `${lat}ms`;
+        }
+        if (hudLoss) {
+            const l = (0.024 + Math.random() * 0.008).toFixed(4);
+            hudLoss.textContent = l;
+        }
+    }, 2800);
+
+    setInterval(() => {
+        mIdx = (mIdx + 1) % modelsCycle.length;
+        if (hudModel) {
+            hudModel.textContent = modelsCycle[mIdx];
+        }
+    }, 9000);
 
 });
